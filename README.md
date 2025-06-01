@@ -1,13 +1,14 @@
-# Python example of reading a text file one line at a time.
+# Python example asking ChatGPt a question
 
-Find a text file and read it line at a time.
+ython example asking ChatGPt a question
 
 ## Tools Used
 
-| Tool    |    Version |
-|:--------|-----------:|
-| Python  |     3.13.2 |
-| PyCharm | 2024.3.4.1 |
+| Tool    |  Version |
+|:--------|---------:|
+| Python  |   3.13.3 |
+| openai  |   1.82.1 |
+| PyCharm | 2025.1.1 |
 
 ## Change History
 

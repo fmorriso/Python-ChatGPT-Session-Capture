@@ -1,57 +1,46 @@
-To use Jackson in Java to read/write POJOs to a MongoDB Atlas collection without using Maven or Gradle, you will need to manually add the required JAR files to your project's classpath. Here are the steps you can follow:
+If you are not using Maven or Gradle, you can manually add the necessary dependencies for Jackson and the MongoDB Java driver to your project.
 
-1. Download the following JAR files:
-- jackson-core
-- jackson-databind
-- jackson-annotations
-- mongo-java-driver
+Here is a step-by-step guide on how to use Jackson in Java to read/write POJO's to a MongoDB Atlas collection without using Maven or Gradle:
 
-You can download these JAR files from the Jackson and MongoDB websites or from Maven Central Repository.
+1. Download the Jackson and MongoDB Java driver JAR files from their respective websites and add them to your project's classpath.
 
-2. Add these JAR files to your project's classpath. You can do this by simply copying the JAR files into your project's lib folder or by adding them to the classpath in your IDE.
-
-3. Write your Java code to read/write POJOs to MongoDB Atlas using Jackson and the MongoDB Java driver. Here is an example code snippet:
+2. Create a simple POJO class that represents the structure of your MongoDB documents. Make sure to annotate the class and its fields with Jackson annotations, such as `@JsonProperty`, as needed.
 
 ```java
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-
-public class MongoDBExample {
-    public static void main(String[] args) {
-        // Initialize the MongoDB client
-        MongoClient mongoClient = new MongoClient("mongodb://your-connection-string");
-
-        // Access the database
-        MongoDatabase database = mongoClient.getDatabase("your-database-name");
-
-        // Access the collection
-        MongoCollection<Document> collection = database.getCollection("your-collection-name");
-
-        // Create object mapper
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // Serialize POJO to JSON and insert into MongoDB
-        YourPOJO pojo = new YourPOJO();
-        String json = objectMapper.writeValueAsString(pojo);
-        Document document = Document.parse(json);
-        collection.insertOne(document);
-
-        // Deserialize JSON to POJO
-        Document result = collection.find().first();
-        YourPOJO deserializedPOJO = objectMapper.readValue(result.toJson(), YourPOJO.class);
-
-        System.out.println("Deserialized POJO: " + deserializedPOJO);
-
-        mongoClient.close();
-    }
+public class MyDocument {
+    @JsonProperty("_id")
+    private ObjectId id;
+    
+    @JsonProperty("name")
+    private String name;
+    
+    // constructor, getters, setters
 }
 ```
 
-Replace "your-connection-string", "your-database-name", and "your-collection-name" with your actual MongoDB Atlas connection string, database name, and collection name.
+3. Create a MongoDB connection using the MongoClient class provided by the MongoDB Java driver. Make sure to replace the connection string with your own MongoDB Atlas connection string.
 
-Replace "YourPOJO" with the class name of your POJO that you want to read/write to MongoDB Atlas.
+```java
+MongoClientURI uri = new MongoClientURI("YOUR_CONNECTION_STRING");
+MongoClient mongoClient = new MongoClient(uri);
+MongoDatabase database = mongoClient.getDatabase("your_db_name");
+MongoCollection<MyDocument> collection = database.getCollection("your_collection_name", MyDocument.class);
+```
 
-Compile and run your Java code, and you should be able to read and write POJOs to a MongoDB Atlas collection using Jackson in Java without using Maven or Gradle.
+4. Use the ObjectMapper class provided by Jackson to serialize and deserialize your POJOs.
+
+```java
+// Serialize POJO to JSON and insert into MongoDB collection
+MyDocument document = new MyDocument();
+document.setName("John Doe");
+String json = new ObjectMapper().writeValueAsString(document);
+collection.insertOne(Document.parse(json));
+
+// Read from MongoDB collection and deserialize into POJO
+MyDocument result = collection.find().first();
+MyDocument deserialized = new ObjectMapper().readValue(result.toJson(), MyDocument.class);
+```
+
+5. Make sure to handle any exceptions that may occur during the read/write operations, such as IOException or MongoException.
+
+And that's it! You should now be able to use Jackson in Java to read/write POJO's to a MongoDB Atlas collection without using Maven or Gradle.
