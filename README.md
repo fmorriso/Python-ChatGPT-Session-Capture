@@ -1,6 +1,6 @@
 # Python example asking ChatGPt a question
 
-ython example asking ChatGPt a question
+Python example of asking ChatGPt a question and displaying the response.
 
 ## Tools Used
 
@@ -12,14 +12,21 @@ ython example asking ChatGPt a question
 
 ## Change History
 
-| Date       | Description                    |
-|:-----------|:-------------------------------|
-| 2025-03-07 | Initial creation               |
+| Date       | Description                                     |
+|:-----------|:------------------------------------------------|
+| 2025-03-07 | Initial creation                                |
+| 2025-06-01 | put OpenAI secret key in .env file for security |
 
 ## References
 * [OpenAI Keys](https://platform.openai.com/api-keys)
 
 ## Developer Notes
+
+### OpenAI Secret Key Storage
+In order to use this program, you need to create ```.env``` text file containing the 
+following key/value pair (the value will be different for your situation):
+
+```SECRET_OPENAPI_KEY=some secret key you generated using OpenAI```
 
 ### Changes in Function Names
 
